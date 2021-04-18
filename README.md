@@ -1,1 +1,39 @@
 # MSDS-DS-6306_Case-Study-2
+## Author: Domicia Herring 
+MSDS 6306: Doing Data Science - Case Study 02
+
+# Executive Summary
+DDSAnalytics is an analytics company that specializes in talent management solutions for Fortune 100 companies. DDSAnalytics has taken on a contract with Frito Lay to tackle predicting employee turnover. Analyzing an existing employee dataset of 870 unique observations with 36 categories, several visualization and models were generated to determine the top three factors leading to attrition.
+
+# Technologies
+* R: 4.0.5
+* R Studio: 1.4.1106
+* R Packages
+  * tidyverse
+  * class
+  * caret
+  * e1071
+  * plotly
+  * randomForest
+  * readxl
+  * mapproj
+  * stringr
+  * tidyr
+  
+# Data Files
+* CaseStudy2-data.csv
+  * Dataset containing Frito Lay's employees including 870 observations and 36 categories
+* CaseStudy2CompSet No Attrition.csv
+  * Dataset containing U.S. breweries regarding their Brew_ID, Name, City, and State
+* CaseStudy2CompSet No Salary.csv
+  * Dataset containing U.S. breweries regarding their Brew_ID, Name, City, and State
+
+# Output Files
+* Case Study 2_domicia.Rmd
+* Case Study 2_domicia.html
+* Case Study 2_domicia.pptx
+* Case2PredictionsDHerring Attrition.csv
+* Case2PredictionsDHerring Salary.csv
+* Case Study 2_ Domicia's Youtube 
+  * [![](http://img.youtube.com/vi/jktYz2ioSCI/0.jpg)](http://www.youtube.com/watch?v=jktYz2ioSCI "")
+
