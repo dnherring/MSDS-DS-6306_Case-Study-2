@@ -24,9 +24,9 @@ DDSAnalytics is an analytics company that specializes in talent management solut
 * CaseStudy2-data.csv
   * Dataset containing Frito Lay's employees including 870 observations and 36 categories
 * CaseStudy2CompSet No Attrition.csv
-  * Dataset containing U.S. breweries regarding their Brew_ID, Name, City, and State
+  * Competition dataset containing real labels that is used to assess the accuracy rate of the best classification model for identifying attrition.
 * CaseStudy2CompSet No Salary.csv
-  * Dataset containing U.S. breweries regarding their Brew_ID, Name, City, and State
+  * Dataset containing real monthly incomes to assess the RMSE regression model.
 
 # Output Files
 * Case Study 2_domicia.Rmd
