@@ -1,0 +1,364 @@
+---
+title: "CaseStudy2_domicia.rmd"
+author: "Domicia Herring"
+date: "03/27/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	comment = NULL
+)
+
+```
+
+## 1. Study Background Summary 
+
+  DDSAnalytics is an analytics company that specializes in talent management solutions for Fortune 100 companies. DDSAnalytics has taken on a contract with Frito Lay to tackle predicting employee turnover. Analyzing an existing employee dataset of 870 unique observations with 36 categories, several visualization and models were generated to determine the top three factors leading to attrition.
+
+```{r packages, include=FALSE}
+# Load APIs
+library(stringr)
+library(tidyr)
+library(tidyverse)
+library(class)
+library(caret)
+library(e1071)
+library(plotly)
+library(randomForest)
+library(readxl)
+
+## Data Analysis
+
+
+```
+
+
+##  2. Importing input data
+
+```{r data}
+
+
+library(readr)
+employeeData <- read.csv("CaseStudy2-data.csv")
+
+
+
+# list rows of data that have missing values
+employeeData[!complete.cases(employeeData),]
+
+```
+
+  - There are no NA values within the dataset.
+
+
+```{r}
+#Check the data type of the variables in the file
+glimpse(employeeData)
+```
+
+
+  - All data types are correct for each variable.
+
+
+## 3.Exploratory Data Analysis
+
+### 1. Graphs by Job Satistifaction
+
+
+     
+
+     
+### Display Employees Per Job Satistifaction by Gender
+
+```{r}
+# count and percent
+Gender_Job_table = employeeData %>% 
+  count(Gender, JobSatisfaction) %>% 
+  group_by(Gender) %>% 
+  mutate(proportion = n/sum(n))
+Gender_Job_table
+
+#Create visulization
+JS_Gender = Gender_Job_table %>% 
+  ggplot(aes(x = JobSatisfaction, y = proportion, fill = Gender)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Job Satistifaction by Gender") + xlab("Job Satisfaction") + ylab("Proportion")
+  
+# Display Employees Per Job Satistifaction by Gender
+ggplotly(JS_Gender)
+
+```
+
+
+   
+     
+### Display Employees Per Job Satisfaction by Age
+
+```{r}
+ #count and percent
+Age_Job_table = employeeData %>% 
+  count(Age, JobSatisfaction) %>% 
+  group_by(Age) %>% 
+  mutate(proportion = n/sum(n))
+Age_Job_table
+
+#Create visualization
+JS_Age = Age_Job_table %>% 
+  ggplot(aes(x = JobSatisfaction, y = proportion, fill = Age)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Job Satistifaction by Age") + xlab("Job Satisfaction") + ylab("Proportion")
+
+#Display Employees Per Job Satisfaction by Age
+ggplotly(JS_Age)
+  
+
+```
+
+     
+### Display Employees Per Overtime by Attrition
+
+
+```{r}
+#count and percent
+AttrOT_table = employeeData %>% 
+  count(Attrition, OverTime) %>% 
+  group_by(Attrition) %>% 
+  mutate(proportion = n/sum(n))
+AttrOT_table
+
+#Create visualization
+Attr_OT = AttrOT_table %>% 
+  ggplot(aes(x = OverTime, y = proportion, fill = Attrition)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Overtime by Attrition") + xlab("Overtime") + ylab("Proportion")
+
+#Display Employees Per Overtime by Attrition
+ggplotly(Attr_OT)
+
+
+```
+
+### Display Employees Attrition By Job Role
+
+```{r}
+#count and percent
+AttrJob_table = employeeData %>% 
+  count(JobRole,Attrition) %>% 
+  group_by(JobRole) %>% 
+  mutate(proportion = n/sum(n))
+AttrJob_table
+
+# Create visualization 
+Attr_Job = AttrJob_table %>% 
+  ggplot(aes(x = Attrition, y = proportion, fill = JobRole)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees Attrition by Job Role") + xlab("Job Role") + ylab("Proportion")
+
+#Display Employees Attrition By Job Role
+ggplotly(Attr_Job)
+
+
+```
+
+
+### Display Employees Overtime By Job Role
+
+
+```{r}
+#count and percent
+OTJob_table = employeeData %>% 
+  count(JobRole, OverTime) %>% 
+  group_by(JobRole) %>% 
+  mutate(proportion = n/sum(n))
+OTJob_table
+
+#Create Visualization
+OTJob = OTJob_table %>% 
+  ggplot(aes(x = OverTime, y = proportion, fill = JobRole)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Overtime by Job Role") + xlab("Overtime") + ylab("Proportion")
+
+#Display Employees Overtime By Job Role
+ggplotly(OTJob)
+
+```
+
+### Display Employees Attrition By Age
+
+```{r}
+#count and percent
+AttrAge_table = employeeData %>% 
+  count(Age, Attrition) %>% 
+  group_by(Age) %>% 
+  mutate(proportion = n/sum(n))
+AttrAge_table
+
+#Create visualization 
+AttrAge = AttrAge_table %>% 
+  ggplot(aes(x = Attrition, y = proportion, fill = Age)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Attrition By Age") + xlab("Attrition") + ylab("Proportion")
+
+#Display Employees Attrition By Age
+ggplotly(AttrAge)
+
+```
+### Display Employees Per Attrtiton by Monthly Income
+
+```{r}
+
+# count and percent
+Attr_MI_table = employeeData %>% 
+  count(MonthlyIncome, Attrition) %>% 
+  group_by(MonthlyIncome) %>% 
+  mutate(proportion = n/sum(n))
+Attr_MI_table
+
+# visualization
+Attr_MI = Attr_MI_table %>% 
+  ggplot(aes(x = Attrition, y = proportion, fill = MonthlyIncome)) +
+  geom_col(show.legend = TRUE, position = "dodge")+
+  ggtitle("Employees  Attrition by Monthly Income") + xlab("Attrition") + ylab("Proportion")
+  
+#Display Employees Per Attrition by Monthly Income
+ggplotly(Attr_MI)
+  
+
+
+```
+
+## 4. Modeling
+
+### Model 1: Naive Bayes
+
+
+
+```{r}
+
+# data prep
+df = employeeData
+summary(df)
+
+df = df %>% 
+  dplyr::select(-ID, - EmployeeCount, - EmployeeNumber, -Over18)  %>% 
+  mutate_if(is.character, factor)
+
+
+## Create train and test sets
+set.seed(120)
+trainIndices = sample(seq(1, nrow(df), by = 1),(.7*nrow(df)))
+trainData = df[trainIndices,]
+testData = df[-trainIndices,]
+
+# Naive Bayes model
+model.nb = naiveBayes(Attrition ~ ., data = df, positive = "Yes")
+
+# model summary
+summary(model.nb )
+model.nb$apriori
+
+
+# Prediction
+predData  = predict(model.nb, testData)
+table(predData)
+predData  = factor(predData)
+
+# Accuracy
+confusionMatrix(predData,testData$Attrition, positive = "Yes")
+
+```
+
+  The model requirements were atleast a 60% sensitivity and specificity for the training and validation set. 
+  The model met these requirements with a 86.97% accuracy, 67.57% sensitivity and 90.18%.
+  
+  
+```{r random forest}
+
+# data prep
+df = employeeData
+summary(df)
+
+df = df %>% 
+  dplyr::select(-ID, - EmployeeCount, - EmployeeNumber, -Over18)  %>% 
+  mutate_if(is.character, factor)
+
+# Random Forest method
+
+
+model.rf = randomForest(Attrition ~ ., ntree = 100, keep.forest=FALSE,
+                  data = df,
+                   importance = TRUE)
+```
+
+
+```{r model summary}
+model.rf
+
+# Importance Variable Plot
+
+Imp_Var = varImp(model.rf)
+(varImpPlot(model.rf))
+
+
+```
+  
+
+```{r}
+## Load the validation data set that does not include Attrition
+
+
+valData = read.csv("CaseStudy2CompSet No Attrition.csv")
+#View(valData)
+
+## Export the predicted results from my model into a .csv file for submission
+validationPrediction <- predict(model.nb, valData) 
+table(validationPrediction)
+
+# create output dataset
+output = valData %>% select(ID)
+output = output %>% 
+  mutate(Attrition = validationPrediction)
+
+
+# save dataset as a csv
+write.csv(output, file = "Case2PredictionsDHerring Attrition.csv", row.names = FALSE)
+
+```
+Based on the model to the right, it may be predicted that the top three contributing factors to attrition at Frito Lay are Monthly Income, Overtime and Age.
+
+### Model 2
+
+```{r}
+## Run a linear regression with the cleaned data set with Monthly Income for Validation Requirement
+fitMonthlyIncome = lm(MonthlyIncome ~ ., data = df)
+summary(fitMonthlyIncome)
+
+
+## Load the validation data set that does not include MonthlyIncome
+
+
+valData.MI = read_excel("CaseStudy2CompSet No Salary.xlsx")
+## Export the predicted results from my model into a .csv file for submission
+validationPrediction.MI = predict(fitMonthlyIncome, valData.MI) 
+
+
+output2 = valData.MI %>% select(ID)
+output2 = output2 %>% 
+  mutate(MonthlyIncome = validationPrediction.MI)
+
+write.csv(output2, file = "Case2PredictionsDHerring Salary.csv", row.names = FALSE)
+```
+
+The model met the required RMSE of less than $3,000 with a RMSE of $1,057.
+
+
+
+
+     
