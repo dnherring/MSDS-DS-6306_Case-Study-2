@@ -35,5 +35,5 @@ DDSAnalytics is an analytics company that specializes in talent management solut
 * Case2PredictionsDHerring Attrition.csv
 * Case2PredictionsDHerring Salary.csv
 * Case Study 2_ Domicia's Youtube 
-  * [![](http://img.youtube.com/vi/jktYz2ioSCI/0.jpg)](http://www.youtube.com/watch?v=jktYz2ioSCI "")
+  * [![](http://img.youtube.com/vi/XpGWd4JKqmM/0.jpg)](http://www.youtube.com/watch?v=XpGWd4JKqmM "")
 
